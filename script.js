@@ -23,6 +23,10 @@ const gameBoard = (function () {
         if (!board[x][y]) {
             console.log("Placing " + mark + " on: " + x, y, mark)
             board[x][y] = mark;
+            
+            //Should probably update the display here as well
+            displayController.updateCell(x, y, mark)
+            
             console.table(board)
             checkWinner();
 
@@ -51,17 +55,17 @@ const gameBoard = (function () {
         }
 
         //Checking diagonals
-        if(board[2][0] && board[2][0] === board[1][1] && board[1][1] === board [0][2]){
+        if (board[2][0] && board[2][0] === board[1][1] && board[1][1] === board[0][2]) {
             console.log("Winner across the diagonal");
             //return
         }
 
-        if(board[0][0] && board[0][0] === board [1][1] && board[1][1] === board[2][2]){
+        if (board[0][0] && board[0][0] === board[1][1] && board[1][1] === board[2][2]) {
             console.log("Winner across the diagonal");
             //return
         }
 
-        if(board.flat().every(cell => cell !=="")){
+        if (board.flat().every(cell => cell !== "")) {
             return "draw"
         }
 
@@ -98,17 +102,35 @@ const playGame = (function () {
     return { makeMove, switchPlayerFn }
 })();
 
-const displayController = (function (){
-    const gridCells = document.querySelectorAll(".cell")
-    gridCells.forEach(cell => {
-        cell.addEventListener('click', function(){
+const displayController = (function () {
 
-            
+    const gridCells = document.querySelectorAll(".cell")
+    const getCells = () => gridCells;
+
+    gridCells.forEach(cell => {
+        cell.addEventListener('click', function () {
             const cellAttr = cell.attributes;
-            const xAttr = cellAttr.getNamedItem('x').value
-            const yAttr = cellAttr.getNamedItem('y').value
-            playGame.makeMove(xAttr,yAttr)
-            console.log(xAttr +" "+ yAttr);
+            const xAttr = cellAttr.getNamedItem('data-x').value
+            const yAttr = cellAttr.getNamedItem('data-y').value
+            playGame.makeMove(xAttr, yAttr)
+            console.log(xAttr + " " + yAttr);
+
         })
-    })
+    });
+
+    const updateCell = (x, y, mark) => {
+        const cell = document.querySelector(`.cell[data-x="${x}"][data-y="${y}"]`);
+        if (cell) {
+            const h1 = cell.querySelector("h1")
+            h1.textContent = mark;
+        }
+    }
+
+    return { getCells, updateCell }
 })();
+
+
+
+let a = displayController.getCells();
+let attr = a.attributes
+console.log(a);
