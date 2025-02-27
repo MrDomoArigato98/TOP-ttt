@@ -33,11 +33,17 @@ const gameBoard = (function () {
     const checkWinner = () => {
         let board = getBoard();
         const boardLength = board.length;
-
+        //Checking Rows
+        //Can also do across the columns here in a single for loop rather than making another one. 
+        //As columns are basically vertical rows
         for (let row = 0; row < boardLength; row++) {
             // console.log(row)
-            if(board[row][0] && board[row][0] == board[row][1] && board[row][1] == board[row][2]){
-                console.log("Winner across the row: "+ row);
+            if (board[row][0] && board[row][0] === board[row][1] && board[row][1] === board[row][2]) {
+                console.log("Winner across the row: " + row);
+            }
+
+            if (board[0][row] && board[0][row] == board[1][row] && board[1][row] === board[2][row]) {
+                console.log("Winner across the column: " + board[0][row] + board[1][row] + board[2][row]);
             }
         }
 
