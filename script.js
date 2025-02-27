@@ -12,10 +12,17 @@ const gameBoard = (function () {
     const getBoard = () => board;
 
     const resetBoard = () => {
+        console.log("resetting board")
         board = [
             ["", "", ""],
             ["", "", ""],
             ["", "", ""]];
+        //Set it to empty string as above
+        for (let i = 0; i < board.length; i++) {
+            for (let j = 0; j < board.length; j++) {
+                displayController.updateCell(i,j,"")
+            }
+        }
     }
 
     const placeMark = (x, y, mark) => {
@@ -126,7 +133,18 @@ const displayController = (function () {
         }
     }
 
+
+    const buttons = document.querySelectorAll("button")
+    buttons.forEach(button => {
+        button.addEventListener('click', function (){
+            gameBoard.resetBoard();
+        })
+    })
+
+    console.log(buttons)
+
     return { getCells, updateCell }
+
 })();
 
 
