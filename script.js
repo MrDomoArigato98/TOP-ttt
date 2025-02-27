@@ -41,22 +41,29 @@ const gameBoard = (function () {
             // console.log(row)
             if (board[row][0] && board[row][0] === board[row][1] && board[row][1] === board[row][2]) {
                 console.log("Winner across the row: " + row);
+                //return
             }
 
             if (board[0][row] && board[0][row] == board[1][row] && board[1][row] === board[2][row]) {
                 console.log("Winner across the column: " + board[0][row] + board[1][row] + board[2][row]);
+                //return
             }
         }
 
         //Checking diagonals
         if(board[2][0] && board[2][0] === board[1][1] && board[1][1] === board [0][2]){
             console.log("Winner across the diagonal");
+            //return
         }
 
         if(board[0][0] && board[0][0] === board [1][1] && board[1][1] === board[2][2]){
             console.log("Winner across the diagonal");
+            //return
         }
 
+        if(board.flat().every(cell => cell !=="")){
+            return "draw"
+        }
 
     }
     return { placeMark, getBoard, resetBoard, checkWinner };
@@ -90,12 +97,3 @@ const playGame = (function () {
 
     return { makeMove, switchPlayerFn }
 })();
-
-
-// if(gameBoard.board[0][0]){
-//     console.log("works")
-// }
-
-
-// gameBoard.placeMark(0,0,"X")
-// console.table(gameBoard.board)
