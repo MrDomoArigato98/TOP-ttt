@@ -97,3 +97,18 @@ const playGame = (function () {
 
     return { makeMove, switchPlayerFn }
 })();
+
+const displayController = (function (){
+    const gridCells = document.querySelectorAll(".cell")
+    gridCells.forEach(cell => {
+        cell.addEventListener('click', function(){
+
+            
+            const cellAttr = cell.attributes;
+            const xAttr = cellAttr.getNamedItem('x').value
+            const yAttr = cellAttr.getNamedItem('y').value
+            playGame.makeMove(xAttr,yAttr)
+            console.log(xAttr +" "+ yAttr);
+        })
+    })
+})();
