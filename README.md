@@ -9,8 +9,6 @@ Tic-Tac-Toe is a classic two-player game where players take turns marking spaces
 - [Usage](#usage)
 - [What I Learned](#what-i-learned)
 - [The Odin Project Guidelines](#the-odin-project-guidelines)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Features
 
@@ -48,20 +46,3 @@ During this project, I learned the following:
 - **Event Handling**: How to handle user interactions such as button clicks and form submissions.
 - **CSS Grid**: How to use CSS Grid to create responsive layouts.
 - **Game Logic**: How to implement game logic for checking win conditions and handling turns.
-
-## The Odin Project Guidelines
-
-This project follows The Odin Project guidelines, which emphasize:
-
-- **Project-Based Learning**: Building real projects to apply and reinforce learning.
-- **Modular Design**: Writing modular, reusable code.
-- **Best Practices**: Following best practices for HTML, CSS, and JavaScript.
-- **Version Control**: Using Git and GitHub for version control and collaboration.
-
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request for any changes.
-
-## License
-
-This project is licensed under the MIT License.
