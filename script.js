@@ -41,6 +41,7 @@ const gameBoard = (function () {
             gameOn = checkWinner();
             if (gameOn == "win") {
                 console.log("winner is: " + player.name)
+                displayController.displayWinner(player)
             }
 
         } else { console.log("GAME IS OVER, OR MARK ALREADY EXISTS") }
@@ -129,6 +130,8 @@ const playGame = (function () {
         }
     }
 
+
+
     return { makeMove, switchPlayerFn, setPlayerOne, setPlayerTwo }
 })();
 
@@ -164,26 +167,44 @@ const displayController = (function () {
         button.addEventListener('click', function () {
             if (button.id == "reset") {
                 gameBoard.resetBoard();
+                resetWinner();
             }
 
             if (button.id == "next-player") {
                 const name = document.getElementById("player-one-name").value;
-                const mark = document.getElementById("modal-player-mark").value;
-                playGame.setPlayerOne(name, mark)
-                dialogPlayerOne.close()
+                if (name != "") {
+                    const mark = document.getElementById("modal-player-mark").value;
+                    playGame.setPlayerOne(name, mark)
+                    dialogPlayerOne.close()
 
-                //Show the next dialog for the next player
-                dialogPlayerTwo.showModal();
+                    //Show the next dialog for the next player
+                    dialogPlayerTwo.showModal();
+                }
+
             }
             if (button.id == "start-game") {
                 const name = document.getElementById("player-two-name").value;
+
                 playGame.setPlayerTwo(name)
                 dialogPlayerTwo.close();
             }
         })
     })
 
-    // dialogPlayerOne.showModal()
-    return { getCells, updateCell }
+    dialogPlayerOne.showModal()
+
+    const resetWinner = () => {
+        const winner = document.getElementById("winner")
+        winner.textContent = ("Let's see who wins . . .")
+    }
+    const displayWinner = (player) => {
+        const winner = document.getElementById("winner")
+        winner.textContent = ("Winner is: " + player.name + " as " + player.mark)
+    }
+
+    const displayPlayers = (playerOne, playerTwo) => {
+
+    }
+    return { getCells, updateCell, displayWinner, resetWinner, displayPlayers }
 
 })();
