@@ -14,41 +14,77 @@
         <h1>Tic-tac-toe</h1>
     </nav>
 
-<div class="game-menu">
-    <button id="reset">Reset Game</button>
-</div>
+    <div class="game-menu">
+        <button id="reset">Reset Game</button>
+        <div>
+            <h1>Dom Vs Vanessa</h1>
+        </div>
+    </div>
+
+    <div id="winner">
+        <h1>Winner</h1>
+    </div>
+    
     <div class="game">
         <div class="game-grid">
             <div class="cell" data-x="0" data-y="0">
-                <h1>0,0</h1>
+                <h1></h1>
             </div>
             <div class="cell" data-x="0" data-y="1">
-                <h1>0,1</h1>
+                <h1></h1>
             </div>
             <div class="cell" data-x="0" data-y="2">
-                <h1>0,2</h1>
+                <h1></h1>
             </div>
             <div class="cell" data-x="1" data-y="0">
-                <h1>1,0</h1>
+                <h1></h1>
             </div>
             <div class="cell" data-x="1" data-y="1">
-                <h1>1,1</h1>
+                <h1></h1>
             </div>
             <div class="cell" data-x="1" data-y="2">
-                <h1>1,2</h1>
+                <h1></h1>
             </div>
             <div class="cell" data-x="2" data-y="0">
-                <h1>2,0</h1>
+                <h1></h1>
             </div>
             <div class="cell" data-x="2" data-y="1">
-                <h1>2,1</h1>
+                <h1></h1>
             </div>
             <div class="cell" data-x="2" data-y="2">
-                <h1>2,2</h1>
+                <h1></h1>
             </div>
         </div>
     </div>
 
+    <dialog id="dialog-player-1">
+        <div class="dialog-container">
+            <div class="modal-content">
+                <h2>Choose your name and symbol </h2>
+                <input type="text" id="player-one-name" placeholder="Enter your name" required>
+                <select id="modal-player-mark">
+                    <option value="X">X</option>
+                    <option value="O">O</option>
+                </select>
+                <button id="next-player">Next Player</button>
+            </div>
+        </div>
+
+        </form>
+        </div>
+    </dialog>
+
+    <dialog id="dialog-player-2">
+        <div class="dialog-container">
+            <div class="modal-content">
+                <h2>Choose name for second player</h2>
+                <input type="text" id="player-two-name" placeholder="Enter your name" required>
+                <button id="start-game">Start Game!</button>
+            </div>
+        </div>
+            </form>
+        </div>
+    </dialog>
 </body>
 
 </html>

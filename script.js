@@ -4,6 +4,8 @@ function player(name, mark) {
 
 //GameBoard will contain everything about the game, and methods you can use against the board 2d array i.e. placing 'X' 'O'
 const gameBoard = (function () {
+    let gameOn = true;
+
     let board = [
         ["", "", ""],
         ["", "", ""],
@@ -17,27 +19,31 @@ const gameBoard = (function () {
             ["", "", ""],
             ["", "", ""],
             ["", "", ""]];
+
+        gameOn = true;
         //Set it to empty string as above
         for (let i = 0; i < board.length; i++) {
             for (let j = 0; j < board.length; j++) {
-                displayController.updateCell(i,j,"")
+                displayController.updateCell(i, j, "")
             }
         }
     }
 
-    const placeMark = (x, y, mark) => {
+    const placeMark = (x, y, player) => {
         let board = getBoard();
-        if (!board[x][y]) {
-            console.log("Placing " + mark + " on: " + x, y, mark)
-            board[x][y] = mark;
-            
-            //Should probably update the display here as well
-            displayController.updateCell(x, y, mark)
-            
-            console.table(board)
-            checkWinner();
+        if (!board[x][y] && gameOn != "win" && gameOn != "draw") {
+            console.log("Placing " + player.mark + " on: " + x, y, player.mark)
+            board[x][y] = player.mark;
 
-        } else { console.log("Marker already here is: " + board[x][y]) }
+            //Should probably update the display here as well
+            displayController.updateCell(x, y, player.mark)
+
+            gameOn = checkWinner();
+            if (gameOn == "win") {
+                console.log("winner is: " + player.name)
+            }
+
+        } else { console.log("GAME IS OVER, OR MARK ALREADY EXISTS") }
 
     };
 
@@ -52,28 +58,28 @@ const gameBoard = (function () {
             // console.log(row)
             if (board[row][0] && board[row][0] === board[row][1] && board[row][1] === board[row][2]) {
                 console.log("Winner across the row: " + row);
-                //return
+                return ("win")
             }
 
             if (board[0][row] && board[0][row] == board[1][row] && board[1][row] === board[2][row]) {
                 console.log("Winner across the column: " + board[0][row] + board[1][row] + board[2][row]);
-                //return
+                return ("win")
             }
         }
 
         //Checking diagonals
         if (board[2][0] && board[2][0] === board[1][1] && board[1][1] === board[0][2]) {
             console.log("Winner across the diagonal");
-            //return
+            return ("win")
         }
 
         if (board[0][0] && board[0][0] === board[1][1] && board[1][1] === board[2][2]) {
             console.log("Winner across the diagonal");
-            //return
+            return ("win")
         }
 
         if (board.flat().every(cell => cell !== "")) {
-            return "draw"
+            return ("draw")
         }
 
     }
@@ -84,17 +90,34 @@ const gameBoard = (function () {
 const playGame = (function () {
 
     //Maybe give a user choice to get the player
-    let playerX = player("Dom", "X")
-    let playerY = player("Vanessa", "Y")
+    let playerOne;
+    let playerTwo;
     let switchPlayer = true;
 
     const makeMove = (x, y) => {
-        if (switchPlayer) {
-            gameBoard.placeMark(x, y, playerX.mark)
-            switchPlayer = false
+        if (playerOne && playerTwo) {
+            if (switchPlayer) {
+                gameBoard.placeMark(x, y, playerOne)
+                switchPlayer = false
+            } else {
+                gameBoard.placeMark(x, y, playerTwo)
+                switchPlayer = true;
+            }
+        } else { console.log("haven't set all players") }
+    }
+
+    const setPlayerOne = (name, mark) => {
+        playerOne = player(name, mark)
+        console.log(playerOne)
+    }
+
+    const setPlayerTwo = (name) => {
+        if (playerOne.mark == "X") {
+            playerTwo = player(name, "O")
+            console.log(playerTwo)
         } else {
-            gameBoard.placeMark(x, y, playerY.mark)
-            switchPlayer = true;
+            playerTwo = player(name, "X")
+            console.log(playerTwo)
         }
     }
 
@@ -106,14 +129,14 @@ const playGame = (function () {
         }
     }
 
-    return { makeMove, switchPlayerFn }
+    return { makeMove, switchPlayerFn, setPlayerOne, setPlayerTwo }
 })();
 
 const displayController = (function () {
 
     const gridCells = document.querySelectorAll(".cell")
-    const getCells = () => gridCells;
 
+    const getCells = () => gridCells;
     gridCells.forEach(cell => {
         cell.addEventListener('click', function () {
             const cellAttr = cell.attributes;
@@ -133,22 +156,34 @@ const displayController = (function () {
         }
     }
 
+    const dialogPlayerOne = document.getElementById("dialog-player-1")
+    const dialogPlayerTwo = document.getElementById("dialog-player-2")
 
     const buttons = document.querySelectorAll("button")
     buttons.forEach(button => {
-        button.addEventListener('click', function (){
-            gameBoard.resetBoard();
+        button.addEventListener('click', function () {
+            if (button.id == "reset") {
+                gameBoard.resetBoard();
+            }
+
+            if (button.id == "next-player") {
+                const name = document.getElementById("player-one-name").value;
+                const mark = document.getElementById("modal-player-mark").value;
+                playGame.setPlayerOne(name, mark)
+                dialogPlayerOne.close()
+
+                //Show the next dialog for the next player
+                dialogPlayerTwo.showModal();
+            }
+            if (button.id == "start-game") {
+                const name = document.getElementById("player-two-name").value;
+                playGame.setPlayerTwo(name)
+                dialogPlayerTwo.close();
+            }
         })
     })
 
-    console.log(buttons)
-
+    // dialogPlayerOne.showModal()
     return { getCells, updateCell }
 
 })();
-
-
-
-let a = displayController.getCells();
-let attr = a.attributes
-console.log(a);

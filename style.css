@@ -75,14 +75,24 @@ nav{
     margin-top: 20px;
 }
 
+.game-menu{
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+}
+
+#winner{
+    display: flex;
+    justify-content: center;
+    margin: 50px;
+}
+
 .game{
     justify-content: center;
     display: flex;
-
-    
 }
 .game-grid{
-    margin-top: 200px;
+    margin-top: 100px;
     display: grid;
     height: 600px;
     width: 600px;
@@ -90,7 +100,6 @@ nav{
     grid-template-rows: 1fr 1fr 1fr;
     
     border: 1px solid black;
-    
     
 }
 .cell{
@@ -103,4 +112,34 @@ nav{
 }
 .cell:hover{
     background-color: red;
+}
+.cell h1{
+    font-size: 5rem;
+}
+
+
+dialog {
+    justify-self: center;
+    align-self: center;
+    background-color: #ECE8EF;   
+}
+
+.dialog-container{
+    display: grid;
+}
+
+.dialog-buttons {
+    justify-content: space-between;
+}
+
+.row-buttons {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+}
+.player-name input{
+    width:75%;
+}
+.row-buttons input{
+    width: 30%;
 }
