@@ -191,7 +191,7 @@ const displayController = (function () {
         })
     })
 
-    dialogPlayerOne.showModal()
+    // dialogPlayerOne.showModal()
 
     const resetWinner = () => {
         const winner = document.getElementById("winner")
