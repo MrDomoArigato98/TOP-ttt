@@ -70,14 +70,21 @@ h6 {
 }
 
 :root{
+    --nav-text-color:black;
+    --nav-bg-color: var(--footer-bg-color);
     --footer-text-color: black;
     --footer-bg-color: rgb(233, 231, 123);
 }
 
 nav{
     display: flex;
+    color: var(--nav-text-color);
+    background-color: var(--nav-bg-color);
+    text-shadow: 1px 1px 1px white;
     justify-content: center;
-    margin-top: 20px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
 }
 
 .game-menu{
@@ -95,6 +102,7 @@ nav{
 .game{
     justify-content: center;
     display: flex;
+    
 }
 .game-grid{
     margin-top: 100px;
@@ -105,9 +113,12 @@ nav{
     grid-template-rows: 1fr 1fr 1fr;
     
     border: 1px solid black;
+
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
     
 }
 .cell{
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     display: grid;
     height: 100%;
     width: 100%;
@@ -116,7 +127,7 @@ nav{
     border: 1px solid black;
 }
 .cell:hover{
-    background-color: red;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
 }
 .cell h1{
     font-size: 5rem;
