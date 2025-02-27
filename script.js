@@ -40,7 +40,7 @@ const gameBoard = (function () {
 
             gameOn = checkWinner();
             if (gameOn == "win") {
-                console.log("winner is: " + player.name)
+                console.log(player.name +" wins as: " + player.mark)
                 displayController.displayWinner(player)
             }
 
@@ -122,17 +122,7 @@ const playGame = (function () {
         }
     }
 
-    const switchPlayerFn = () => {
-        if (switchPlayer) {
-            switchPlayer = false
-        } else {
-            switchPlayer = true;
-        }
-    }
-
-
-
-    return { makeMove, switchPlayerFn, setPlayerOne, setPlayerTwo }
+    return { makeMove, setPlayerOne, setPlayerTwo }
 })();
 
 const displayController = (function () {
@@ -171,27 +161,31 @@ const displayController = (function () {
             }
 
             if (button.id == "next-player") {
-                const name = document.getElementById("player-one-name").value;
-                if (name != "") {
+                const name = document.getElementById("player-one-name")
+                if (name.value != "") {
                     const mark = document.getElementById("modal-player-mark").value;
-                    playGame.setPlayerOne(name, mark)
+                    playGame.setPlayerOne(name.value, mark)
                     dialogPlayerOne.close()
-
                     //Show the next dialog for the next player
                     dialogPlayerTwo.showModal();
+                }else{
+                    name.placeholder = "Read the above again "
                 }
 
             }
             if (button.id == "start-game") {
-                const name = document.getElementById("player-two-name").value;
-
-                playGame.setPlayerTwo(name)
-                dialogPlayerTwo.close();
+                const name = document.getElementById("player-two-name");
+                if (name.value != "") {
+                    playGame.setPlayerTwo(name.value)
+                    dialogPlayerTwo.close();
+                }else{
+                    name.placeholder="Name goes here pal"
+                }
             }
         })
     })
 
-    // dialogPlayerOne.showModal()
+    dialogPlayerOne.showModal()
 
     const resetWinner = () => {
         const winner = document.getElementById("winner")
@@ -199,11 +193,13 @@ const displayController = (function () {
     }
     const displayWinner = (player) => {
         const winner = document.getElementById("winner")
-        winner.textContent = ("Winner is: " + player.name + " as " + player.mark)
+        console.log(player)
+        winner.textContent = player.name +" wins as: " + player.mark
     }
 
     const displayPlayers = (playerOne, playerTwo) => {
-
+        const header = document.getElementById("who-playing")
+        header.textContent = (playerOne.name + " Vs " + playerTwo.name)
     }
     return { getCells, updateCell, displayWinner, resetWinner, displayPlayers }
 
