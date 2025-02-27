@@ -4,14 +4,16 @@ function player(name, mark) {
 
 //GameBoard will contain everything about the game, and methods you can use against the board 2d array i.e. placing 'X' 'O'
 const gameBoard = (function () {
-    let board = [
+    const board = [
         ["", "", ""],
         ["", "", ""],
         ["", "", ""]];
 
     const placeMark = (x, y, mark) => {
-        console.log(x, y, mark)
+        console.log("Placing " + mark + " on: " + x, y, mark)
         board[x][y] = mark;
+        console.table(gameBoard.board)
+
     };
 
     return { placeMark, board };
@@ -26,17 +28,17 @@ const playGame = (function () {
 
     let switchPlayer = true;
 
-    if (switchPlayer) {
-        
-        switchPlayer = false
-    } else {
-
-        switchPlayer = true;
+    const makeMove = (x, y) => {
+        if (switchPlayer) {
+            gameBoard.placeMark(x, y, playerX.mark)
+            switchPlayer = false
+        } else {
+            gameBoard.placeMark(x, y, playerY.mark)
+            switchPlayer = true;
+        }
     }
 
-    // return{playerX,playerY}
-
-
+    return { makeMove }
 })();
 
 
