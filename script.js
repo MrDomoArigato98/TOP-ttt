@@ -1,5 +1,5 @@
-function player(name) {
-    return { name };
+function player(name, mark) {
+    return { name, mark };
 }
 
 
@@ -14,12 +14,18 @@ const gameBoard = (function () {
         board[x][y] = mark;
     };
 
-    const checkWinner = () => {
-
-    }
     return { placeMark, board };
 })();
 
+
+const playGame = (function () {
+
+})();
+
+
+// if(gameBoard.board[0][0]){
+//     console.log("works")
+// }
 
 
 // gameBoard.placeMark(0,0,"X")
