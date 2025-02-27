@@ -93,6 +93,9 @@ nav{
     padding: 10px;
 }
 
+.game-menu{
+    align-items: center;
+}
 #winner{
     display: flex;
     justify-content: center;

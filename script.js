@@ -120,6 +120,7 @@ const playGame = (function () {
             playerTwo = player(name, "X")
             console.log(playerTwo)
         }
+        displayController.displayPlayers(playerOne,playerTwo);
     }
 
     return { makeMove, setPlayerOne, setPlayerTwo }
@@ -194,12 +195,12 @@ const displayController = (function () {
     const displayWinner = (player) => {
         const winner = document.getElementById("winner")
         console.log(player)
-        winner.textContent = player.name +" wins as: " + player.mark
+        winner.textContent = player.name +" wins as: '" + player.mark+"'"
     }
 
     const displayPlayers = (playerOne, playerTwo) => {
         const header = document.getElementById("who-playing")
-        header.textContent = (playerOne.name + " Vs " + playerTwo.name)
+        header.textContent = (playerOne.name + " as '" + playerOne.mark + "' Vs " + playerTwo.name + " as '"+playerTwo.mark+"'")
     }
     return { getCells, updateCell, displayWinner, resetWinner, displayPlayers }
 
