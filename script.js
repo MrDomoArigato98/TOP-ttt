@@ -4,14 +4,12 @@ function player(name, mark) {
 
 //GameBoard will contain everything about the game, and methods you can use against the board 2d array i.e. placing 'X' 'O'
 const gameBoard = (function () {
-    let gameOn = true;
+    let isGameOn = true;
 
     let board = [
         ["", "", ""],
         ["", "", ""],
         ["", "", ""]];
-
-    const getBoard = () => board;
 
     const resetBoard = () => {
         console.log("resetting board")
@@ -20,7 +18,7 @@ const gameBoard = (function () {
             ["", "", ""],
             ["", "", ""]];
 
-        gameOn = true;
+        isGameOn = true;
         //Set it to empty string as above
         for (let i = 0; i < board.length; i++) {
             for (let j = 0; j < board.length; j++) {
@@ -30,17 +28,16 @@ const gameBoard = (function () {
     }
 
     const placeMark = (x, y, player) => {
-        let board = getBoard();
-        if (!board[x][y] && gameOn != "win" && gameOn != "draw") {
+        if (!board[x][y] && isGameOn != "win" && isGameOn != "draw") {
             console.log("Placing " + player.mark + " on: " + x, y, player.mark)
             board[x][y] = player.mark;
 
             //Should probably update the display here as well
             displayController.updateCell(x, y, player.mark)
 
-            gameOn = checkWinner();
-            if (gameOn == "win") {
-                console.log(player.name +" wins as: " + player.mark)
+            isGameOn = checkWinner();
+            if (isGameOn == "win") {
+                console.log(player.name + " wins as: " + player.mark)
                 displayController.displayWinner(player)
             }
 
@@ -49,7 +46,6 @@ const gameBoard = (function () {
     };
 
     const checkWinner = () => {
-        let board = getBoard();
         const boardLength = board.length;
         /*
         Checking Rows. Can also do across the columns here in a single for loop rather than making another one. 
@@ -84,34 +80,34 @@ const gameBoard = (function () {
         }
 
     }
-    return { placeMark, getBoard, resetBoard, checkWinner };
+    return { placeMark, resetBoard, checkWinner };
 })();
 
 //So probably doing everything about the game can be done in playGame.
 const playGame = (function () {
-
-    //Maybe give a user choice to get the player
     let playerOne;
     let playerTwo;
-    let switchPlayer = true;
+    let isNextTurn = true;
 
     const makeMove = (x, y) => {
         if (playerOne && playerTwo) {
-            if (switchPlayer) {
+            if (isNextTurn) {
                 gameBoard.placeMark(x, y, playerOne)
-                switchPlayer = false
+                isNextTurn = false
             } else {
                 gameBoard.placeMark(x, y, playerTwo)
-                switchPlayer = true;
+                isNextTurn = true;
             }
         } else { console.log("haven't set all players") }
     }
 
+    //Method to set player one
     const setPlayerOne = (name, mark) => {
         playerOne = player(name, mark)
         console.log(playerOne)
     }
 
+    //method to set player two. It sets it as the opposite marker as player one has.
     const setPlayerTwo = (name) => {
         if (playerOne.mark == "X") {
             playerTwo = player(name, "O")
@@ -120,17 +116,25 @@ const playGame = (function () {
             playerTwo = player(name, "X")
             console.log(playerTwo)
         }
-        displayController.displayPlayers(playerOne,playerTwo);
+        
+        //Then display the players top-right
+        displayController.displayPlayers(playerOne, playerTwo);
     }
 
     return { makeMove, setPlayerOne, setPlayerTwo }
 })();
 
+//Controlsthe everything to do with the U.I and buttons
 const displayController = (function () {
 
     const gridCells = document.querySelectorAll(".cell")
+    const dialogPlayerOne = document.getElementById("dialog-player-1")
+    const dialogPlayerTwo = document.getElementById("dialog-player-2")
+    const buttons = document.querySelectorAll("button")
 
-    const getCells = () => gridCells;
+    //Show modal at the start for the name.
+    dialogPlayerOne.showModal()
+
     gridCells.forEach(cell => {
         cell.addEventListener('click', function () {
             const cellAttr = cell.attributes;
@@ -142,6 +146,7 @@ const displayController = (function () {
         })
     });
 
+    //Method to set the cell to an X, O, or clear it once it's reset.
     const updateCell = (x, y, mark) => {
         const cell = document.querySelector(`.cell[data-x="${x}"][data-y="${y}"]`);
         if (cell) {
@@ -150,17 +155,13 @@ const displayController = (function () {
         }
     }
 
-    const dialogPlayerOne = document.getElementById("dialog-player-1")
-    const dialogPlayerTwo = document.getElementById("dialog-player-2")
-
-    const buttons = document.querySelectorAll("button")
+    //Sets listeners for all buttons on page. 
     buttons.forEach(button => {
         button.addEventListener('click', function () {
             if (button.id == "reset") {
                 gameBoard.resetBoard();
                 resetWinner();
             }
-
             if (button.id == "next-player") {
                 const name = document.getElementById("player-one-name")
                 if (name.value != "") {
@@ -169,7 +170,7 @@ const displayController = (function () {
                     dialogPlayerOne.close()
                     //Show the next dialog for the next player
                     dialogPlayerTwo.showModal();
-                }else{
+                } else {
                     name.placeholder = "Read the above again "
                 }
 
@@ -179,29 +180,29 @@ const displayController = (function () {
                 if (name.value != "") {
                     playGame.setPlayerTwo(name.value)
                     dialogPlayerTwo.close();
-                }else{
-                    name.placeholder="Name goes here pal"
+                } else {
+                    name.placeholder = "Name goes here mate"
                 }
             }
         })
     })
-
-    dialogPlayerOne.showModal()
-
+    //Sets the top header to default state
     const resetWinner = () => {
         const winner = document.getElementById("winner")
         winner.textContent = ("Let's see who wins . . .")
     }
+
+    //Sets the top header as the winner username
     const displayWinner = (player) => {
         const winner = document.getElementById("winner")
         console.log(player)
-        winner.textContent = player.name +" wins as: '" + player.mark+"'"
+        winner.textContent = player.name + " wins as: '" + player.mark + "'"
     }
-
+    
+    //Top-right display as to who won the game
     const displayPlayers = (playerOne, playerTwo) => {
         const header = document.getElementById("who-playing")
-        header.textContent = (playerOne.name + " as '" + playerOne.mark + "' Vs " + playerTwo.name + " as '"+playerTwo.mark+"'")
+        header.textContent = (playerOne.name + " as '" + playerOne.mark + "' Vs " + playerTwo.name + " as '" + playerTwo.mark + "'")
     }
-    return { getCells, updateCell, displayWinner, resetWinner, displayPlayers }
-
+    return { updateCell, displayWinner, resetWinner, displayPlayers }
 })();
