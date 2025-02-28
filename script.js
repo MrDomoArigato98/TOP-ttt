@@ -164,7 +164,7 @@ const displayController = (function () {
         button.addEventListener('click', function () {
             if (button.id == "reset") {
                 gameBoard.resetBoard();
-                resetDisplayWinner();
+                displayWinner();
             }
             if (button.id == "next-player") {
                 const name = document.getElementById("player-one-name")
@@ -190,11 +190,6 @@ const displayController = (function () {
             }
         })
     })
-    //Sets the top header to default state
-    const resetDisplayWinner = () => {
-        const winner = document.getElementById("winner")
-        winner.textContent = ("Let's see who wins . . .")
-    }
 
     //Sets the top header as the winner username
     const displayWinner = (text = "Let's see who wins") => {
@@ -207,5 +202,5 @@ const displayController = (function () {
         const header = document.getElementById("who-playing")
         header.textContent = text;
     }
-    return { updateCell, displayWinner, resetDisplayWinner, displayPlayers }
+    return { updateCell, displayWinner, displayPlayers }
 })();
