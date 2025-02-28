@@ -4,7 +4,7 @@ function player(name, mark) {
 
 //GameBoard will contain everything about the game, and methods you can use against the board 2d array i.e. placing 'X' 'O'
 const gameBoard = (function () {
-    let isGameOn = true;
+    let gameState = "play";
 
     let board = [
         ["", "", ""],
@@ -18,7 +18,7 @@ const gameBoard = (function () {
             ["", "", ""],
             ["", "", ""]];
 
-        isGameOn = true;
+        gameState = "play";
         //Set it to empty string as above
         for (let i = 0; i < board.length; i++) {
             for (let j = 0; j < board.length; j++) {
@@ -28,20 +28,24 @@ const gameBoard = (function () {
     }
 
     const placeMark = (x, y, player) => {
-        if (!board[x][y] && isGameOn != "win" && isGameOn != "draw") {
+        if (!board[x][y] && gameState != "win" && gameState != "draw") {
             console.log("Placing " + player.mark + " on: " + x, y, player.mark)
             board[x][y] = player.mark;
-
-            //Should probably update the display here as well
+            
+            //Should probably update the display here as well.
             displayController.updateCell(x, y, player.mark)
 
-            isGameOn = checkWinner();
-            if (isGameOn == "win") {
+            gameState = checkWinner();
+            if (gameState == "win") {
                 console.log(player.name + " wins as: " + player.mark)
-                displayController.displayWinner(player)
+                displayController.displayWinner(player.name + " wins as: " + player.mark)
+            }else if(gameState == "draw"){
+                displayController.displayWinner("It's a draw!")   
             }
 
-        } else { console.log("GAME IS OVER, OR MARK ALREADY EXISTS") }
+        } else { 
+            //Śomething could go here.
+        }
 
     };
 
@@ -118,7 +122,7 @@ const playGame = (function () {
         }
         
         //Then display the players top-right
-        displayController.displayPlayers(playerOne, playerTwo);
+        displayController.displayPlayers(playerOne.name + " as '" + playerOne.mark + "' Vs " + playerTwo.name + " as '" + playerTwo.mark + "'");
     }
 
     return { makeMove, setPlayerOne, setPlayerTwo }
@@ -160,7 +164,7 @@ const displayController = (function () {
         button.addEventListener('click', function () {
             if (button.id == "reset") {
                 gameBoard.resetBoard();
-                resetWinner();
+                resetDisplayWinner();
             }
             if (button.id == "next-player") {
                 const name = document.getElementById("player-one-name")
@@ -171,7 +175,7 @@ const displayController = (function () {
                     //Show the next dialog for the next player
                     dialogPlayerTwo.showModal();
                 } else {
-                    name.placeholder = "Read the above again "
+                    name.placeholder = "Read the above again"
                 }
 
             }
@@ -187,22 +191,21 @@ const displayController = (function () {
         })
     })
     //Sets the top header to default state
-    const resetWinner = () => {
+    const resetDisplayWinner = () => {
         const winner = document.getElementById("winner")
         winner.textContent = ("Let's see who wins . . .")
     }
 
     //Sets the top header as the winner username
-    const displayWinner = (player) => {
+    const displayWinner = (text = "Let's see who wins") => {
         const winner = document.getElementById("winner")
-        console.log(player)
-        winner.textContent = player.name + " wins as: '" + player.mark + "'"
+        winner.textContent = text;
     }
     
     //Top-right display as to who won the game
-    const displayPlayers = (playerOne, playerTwo) => {
+    const displayPlayers = (text) => {
         const header = document.getElementById("who-playing")
-        header.textContent = (playerOne.name + " as '" + playerOne.mark + "' Vs " + playerTwo.name + " as '" + playerTwo.mark + "'")
+        header.textContent = text;
     }
-    return { updateCell, displayWinner, resetWinner, displayPlayers }
+    return { updateCell, displayWinner, resetDisplayWinner, displayPlayers }
 })();
